@@ -56,17 +56,23 @@
                     <div id="divPagination"></div>
                 </div>
 
-                <div id="wrapUserLogout">
-                    <p id="userTitle">{{ request.session.user_id }}</p>
-                    <div id="wrapUserActive">
-                        <div class="divUserActive">게시글<br>0</div>
-                        <div class="divUserActive">좋아요<br>0 / 0</div>
-                        <div class="divUserActive">댓글<br>0</div>
+                {% if request.session.userID %}
+                    <div id="wrapUserLogout">
+                        <p id="userTitle">{{ request.session.userID }}</p>
+                        <div id="wrapUserActive">
+                            <div class="divUserActive">게시글<br>0</div>
+                            <div class="divUserActive">좋아요<br>0 / 0</div>
+                            <div class="divUserActive">댓글<br>0</div>
+                        </div>
+                        <a id="aWrite" href="{% url 'postWrite' %}"><i class="far fa-edit"></i><br>글쓰기</a>
+                        <a id="aMyPage" href="#"><i class="fas fa-home"></i><br>마이홈</a>
+                        <a id="aLogout" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i><br>로그아웃</a>
                     </div>
-                    <a id="aWrite" href="{% url 'postWrite' %}"><i class="far fa-edit"></i><br>글쓰기</a>
-                    <a id="aMyPage" href="#"><i class="fas fa-home"></i><br>마이홈</a>
-                    <a id="aLogout" href="#"><i class="fas fa-sign-out-alt"></i><br>로그아웃</a>
-                </div>
+                {% else %}
+                    <div id="wrapUserLogin">
+                        <a id="btnLogin" href="{% url 'login' %}">로그인</a>
+                    </div>
+                {% endif %}
             </div>
 
             <div id="wrapFooter">

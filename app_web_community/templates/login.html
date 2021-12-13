@@ -5,6 +5,7 @@
     <title>LOGIN</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/account.js"></script>
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/common.css">
     <link rel="stylesheet" href="/static/css/account.css">
@@ -15,18 +16,19 @@
         <div id="wrapContent">
             <a id="mainTitle" href="{% url 'index' %}">STORY</a>
             <form method="POST" action="{% url 'login' %}" autocomplete="off">
+                {% csrf_token %}
                 <table id="tblLogin">
                     <tr>
                         <td class="tdTitle">아이디</td>
-                        <td class="tdInput"><input type="text" class="inputLogin" id="userID" name="userID" value=""/></td>
+                        <td class="tdInput"><input type="text" class="inputLogin" id="userID" name="user_id" value="{{ user_id }}"/></td>
                         <td rowspan="2"><button id="btnLogin" class="btn btn-primary" type="submit"><h5>로그인</h5></button></td>
                     </tr>
                     <tr>
                         <td class="tdTitle">비밀번호</td>
-                        <td class="tdInput"><input type="password" class="inputLogin" id="userPassword" name="userPassword" value=""/></td>
+                        <td class="tdInput"><input type="password" class="inputLogin" id="userPassword" name="user_pwd" value=""/></td>
                     </tr>
                     <tr>
-                        <td colspan="3" id="divError"></td>
+                        <td colspan="3" id="divError">{{ error_message }}</td>
                     </tr>
                     <tr>
                         <td colspan="3" id="divJoin">
@@ -46,7 +48,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalScrollableTitle">회원가입</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="setJoin()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -55,10 +57,10 @@
                         <div class="form-group row">
                             <label for="inputID" class="col-sm-3 col-form-label"><i>*</i> 아이디</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="inputID" name="inputID">
+                                <input type="text" class="form-control" id="inputID" name="inputID" onkeyup="">
                             </div>
                             <div class="col-sm-2">
-                                <button type="button" id="btnCheckUserID" class="btn btn-primary" data-toggle="modal" onclick="">중복 확인</button>
+                                <button type="button" id="btnCheckUserID" class="btn btn-primary" data-toggle="modal" onclick="checkUserID()">중복 확인</button>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -74,7 +76,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputName" class="col-sm-3 col-form-label">이름</label>
+                            <label for="inputName" class="col-sm-3 col-form-label"><i>*</i> 이름</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" id="inputName" name="inputName">
                             </div>
@@ -120,7 +122,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-3 col-form-label"><i>*</i> 이메일</label>
+                            <label for="inputEmail" class="col-sm-3 col-form-label">이메일</label>
                             <div class="col-sm-6">
                                 <input type="email" class="form-control" id="inputEmail" name="inputEmail">
                             </div>
@@ -135,8 +137,8 @@
                 </div>
                 <input type="hidden" id="checkUserID" value="unchecked">
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" onclick="">취소</button>
-                    <button type="button" id="btnJoin" class="btn btn-primary" data-toggle="modal" onclick="">가입</button>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" onclick="setJoin()">취소</button>
+                    <button type="button" id="btnJoin" class="btn btn-primary" data-toggle="modal" onclick="validation()">가입</button>
                 </div>
             </div>
         </div>
