@@ -1,0 +1,215 @@
+#wrapUserInfo {
+    position: fixed;
+    top: 0;
+    width: 400px; height: 100vh;
+    background-color: #424242;
+}
+
+#wrapMainTitle {
+    clear:both;
+    display:inline-block;
+    width:100%;
+    margin-bottom:100px;
+}
+
+#userCategoryList {
+    display: inline-block;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px;
+    float:left;
+    cursor:pointer;
+}
+
+#mainTitleLogo {
+    display: inline-block;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 20px;
+    float:right;
+}
+
+#mainTitleLogo:hover {
+    text-decoration: none;
+}
+
+#userProfileImg {
+    display: inline-block;
+    width: 200px; height: 200px;
+    background-color: white;
+    border-radius: 100px;
+    margin: 0 100px;
+}
+
+#userProfileID {
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+#userProfileBtn {
+    display: inline-block;
+    width: 100%; height: 100px;
+    margin-top:100px;
+}
+
+#aWrite, #aSetting, #aLogout {
+    color: white;
+    display: inline-block;
+    width: 49%; height: 30px;
+    text-align: center;
+    float: left;
+    line-height: 30px;
+    margin-top: 20px;
+}
+
+#aWrite:hover, #aSetting:hover, #aLogout:hover {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+#wrapContent {
+    min-width: 1130px;
+    padding: 100px 50px 0 450px;
+}
+
+#wrapUserCategory {
+    position: fixed;
+    top: 5vh;
+    display:none;
+    width: 400px; height: 95vh;
+    background-color: #424242;
+    opacity: 0.9;
+    overflow-y:scroll;
+    padding:20px 0;
+}
+
+#wrapUserCategory::-webkit-scrollbar {
+    display:none;
+}
+
+#wrapCategorySetting {
+    clear:both;
+    display:inline-block;
+    width:100%;
+}
+
+#userCategorySetting {
+    display: inline-block;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px 20px;
+    cursor:pointer;
+    float:right;
+}
+
+#userCategorySettingClose {
+    display: inline-block; display:none;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px 20px;
+    cursor:pointer;
+    float:right;
+}
+
+.divUserCategory {
+    display:inline-block;
+    width:340px;
+    color:white;
+    margin:30px 30px 10px 30px;
+    padding:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#divCreateUserCategoryNew {
+    margin:10px 30px;
+    display:none;
+}
+
+.divUserCategoryRe {
+    display:inline-block;
+    width:340px;
+    color:white;
+    margin:0 30px;
+    padding:10px 10px 10px 50px;
+    cursor:pointer;
+}
+
+.divCreateUserCategory, .divCreateUserCategoryRe {
+    display:inline-block;
+    width:100%;
+    padding:0 30px;
+    clear:both;
+    display:none;
+}
+
+.divUpdateUserCategory {
+    display:inline-block;
+    width:100%;
+    padding:0 30px;
+    clear:both;
+    display:none;
+    margin-top:30px;
+}
+
+.divUpdateUserCategoryRe {
+    display:inline-block;
+    width:100%;
+    padding:0 70px;
+    clear:both;
+    display:none;
+}
+
+.createUserCategory, .createUserCategoryRe {
+    width:75%;
+    float:left;
+    background-color:#424242;
+    border:none;
+    border-bottom:2px solid lightgray;
+    color:white;
+    padding:10px;
+}
+
+.updateUserCategory, .updateUserCategoryRe {
+    width:75%;
+    float:left;
+    background-color:#424242;
+    border:none;
+    border-bottom:2px solid lightgray;
+    color:white;
+    padding:10px;
+}
+
+.createUserCategory:focus, .updateUserCategory:focus, .createUserCategoryRe:focus, .updateUserCategoryRe:focus {
+    outline: none;
+}
+
+.btnUserCategoryCreate, .btnUserCategoryUpdate, .btnUserCategoryReCreate, .btnUserCategoryReUpdate {
+    width:20%;
+    float:right;
+    color:white;
+    border:none;
+    background:none;
+    padding:10px;
+}
+
+.btnUserCategoryCreate:focus, .btnUserCategoryUpdate:focus, .btnUserCategoryReCreate:focus, .btnUserCategoryReUpdate:focus {
+    outline: none;
+}
+
+.fas {
+    cursor:pointer;
+}
+
+.iUserCategory {
+    float:right;
+    padding:5px 10px;display:none;
+}

@@ -1,0 +1,32 @@
+{% extends './layouts/navbar.html' %}
+
+
+{% block content %}
+    <div id="wrapPostCategory">
+        <div id="divPostCategory"></div>
+    </div>
+
+    <div id="wrapPostWrite">
+        <div id="divPostTitle">
+            <input type="text" id="inputTitle" value="" readonly>
+        </div>
+
+        <div id="divPostInfo">
+            <p class="pPostInfo"></p>
+            <p class="pPostInfo">|</p>
+            <p class="pPostInfo">최초 작성일 : </p>
+            <p class="pPostInfo">|</p>
+            <p class="pPostInfo">최종 수정일 : </p>
+        </div>
+
+        <div id="divPostContent">
+            <textarea id="inputContent" readonly></textarea>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block btn %}
+    <input type="submit" id="btnPostDelete" value="삭제" onclick="">
+    <input type="submit" id="btnPostUpdate" value="수정" onclick="">
+{% endblock %}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>POST</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/post.css">
+</head>
+<body>
+    <div id="wrapUserInfo">
+        <div id="wrapMainTitle">
+            <i id="userCategoryList" class="fas fa-bars"></i>
+            <a id="mainTitleLogo" href="{% url 'index' %}">G A N A</a>
+        </div>
+
+        <div id="userProfileImg"></div>
+        <p id="userProfileID"></p>
+
+        <form method="POST" action="{% url 'postList' %}" id="formPostList">
+            <input type="hidden" id="userID" name="userID" value="">
+        </form>
+
+            <div id="userProfileBtn">
+                <a id="aWrite" href="#"><i class="far fa-edit"></i><br>글쓰기</a>
+                <a id="aLogout" href="#"><i class="fas fa-sign-out-alt"></i><br>로그아웃</a>
+            </div>
+    </div>
+
+    <div id="wrapUserCategory"></div>
+
+    <div id="wrapContent">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+    <div id="wrapBtnPostWrite">
+        {% block btn %}
+
+        {% endblock %}
+    </div>
+
+
+    <div class="modal" id="alertCheckModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">!!!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="alert_check_msg"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnModalNo" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" id="btnModalYes" class="btn btn-primary" data-toggle="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="alertWarningModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">!!!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="alert_warning_msg"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,290 @@
+#wrapSearch {
+    clear: both;
+}
+
+#divCategory {
+    width: 100%;
+    float: left;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px; padding-left: 30px;
+    color: darkgray;
+    display: inline-block;
+}
+
+#divSearch {
+    width: 500px; height: 50px;
+    float: right;
+    border-bottom: 3px solid lightgray;
+    margin-right: 30px;
+}
+
+#wrapList {
+    clear: both;
+    width: 100%; height: 1000px;
+    display: inline-block;
+    margin: 10px 0 30px 0;
+}
+
+.row {
+    padding-left: 35px;
+}
+
+.selectCategory {
+    padding: 0;
+}
+
+#wrapPostWrite {
+    clear: both;
+    width: 100%; height: 1000px;
+    display: inline-block;
+    margin: 10px 0 30px 0;
+}
+
+#divPostCategory {
+    width: 96%;
+    margin: 2%;
+}
+
+#divPostTitle {
+    width: 96%; height: 80px;
+    margin: 0 2%;
+    line-height: 80px;
+}
+
+#pCommonCategory {
+    color: darkgray;
+    font-size: 20px;
+    padding: 0 10px;
+    font-weight: bold;
+    float:left;
+    height:40px;
+    line-height:40px;
+    border-bottom:2px solid lightgray;
+}
+
+#pPersonalCategory, #pPersonalCategoryRe {
+    color: darkgray;
+    font-size: 17px;
+    padding-left: 50px;
+    font-weight: bold;
+    float:left;
+    line-height:40px;
+    height:40px;
+}
+
+#inputTitle {
+    width: 100%;
+    padding: 0 20px;
+    border: none;
+    font-size: 30px;
+}
+
+#divPostInfo {
+    margin-left: 30px;
+}
+
+.pPostInfo {
+    text-align: center;
+    margin: 0 10px;
+    color: #A7A7A7;
+    font-size: 13px;
+    display: inline-block;
+}
+
+#inputTitle:focus, #inputContent:focus, #inputComment:focus, #inputCommentRe:focus, #btnPostWrite:focus, #btnPostWriteExit:focus, #btnPostDelete:focus, #btnPostUpdate:focus, #btnCommentWrite:focus, #btnCommentReWrite:focus, .btnCommentReWrite:focus {
+    outline: none;
+}
+
+#divPostContent {
+    width: 96%;
+    margin: 2%;
+    border-top: 2px solid lightgray;
+}
+
+#inputContent {
+    width: 100%; min-height: 500px;
+    overflow-y: hidden;
+    border: none;
+    padding: 30px 20px;
+    resize: none;
+}
+
+#hiddenInputContent {
+    width: 300px; height: 1px;
+    overflow-y: hidden;
+    position: absolute;
+    top: -9px;
+}
+
+#selectCategory {
+    margin: 0;
+}
+
+#wrapLike {
+    display: inline-block;
+    width:100%;
+    text-align:center;
+}
+
+#divLike {
+    display: inline-block;
+    height: 100px;
+    margin:0 auto;
+}
+
+#divThumbsUp, #divThumbsDown {
+    display:inline-block;
+    width:100px; height:100px;
+    border:3px solid black;
+    border-radius:50px;
+    text-align:center;
+    line-height:30px;
+    padding:20px;
+    float:left;
+    margin:0 20px;
+    cursor:pointer;
+}
+
+.fa-thumbs-up, .fa-thumbs-down {
+    font-size:25px;
+}
+
+#wrapCommentList {
+    display: inline-block;
+    width:100%; height:200px;
+    margin:50px 0;
+    border-top:2px solid lightgray;
+}
+
+#pComment {
+    padding:20px 0 0 20px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+#divInputComment {
+    clear:both;
+    padding:20px;
+}
+
+#inputComment {
+    width: 88%; height: 80px;
+    padding: 27px 20px;
+    resize: none;
+    float:left;
+}
+
+#btnCommentWrite {
+    float:right;
+    display:inline-block;
+    width:10%; height:80px;
+    background-color: #5C6069;
+    border:none;
+    border-radius: 10px;
+    color: white;
+}
+
+.divInputCommentRe {
+    padding:10px;
+    clear:both;
+    display:inline-block;
+    width:100%; height:100%;
+    display:none;
+}
+
+.inputCommentRe {
+    width: 90%; height:30px;
+    padding:0 10px;
+    border:none;
+    border-bottom:1px solid gray;
+    resize: none;
+    float:left;
+}
+
+.btnCommentReWrite {
+    float:right;
+    display:inline-block;
+    width:8%; height:30px;
+    background-color: #5C6069;
+    border:none;
+    border-radius: 10px;
+    color: white;
+}
+
+#wrapComment {
+    clear:both;
+    padding-top:30px;
+    padding-bottom:50px;
+}
+
+.divComment {
+    margin: 0 20px 20px 20px; padding: 20px;
+    clear:both;
+}
+
+.wrapCommentRe {
+    display:none;
+}
+
+.divCommentRe {
+    margin: 0 50px; padding: 20px;
+}
+
+.pCommentUser{
+    font-weight:bold;
+    display:inline-block;
+    padding-right: 20px;
+}
+
+.pCommentDate {
+    display:inline-block;
+    color:lightgray;
+    font-size:15px;
+    padding-right: 20px;
+}
+
+.pCommentReWrite, .pCommentDelete {
+    display:inline-block;
+    color:gray;
+    font-size:12px;
+    cursor:pointer;
+    padding-right:20px;
+}
+
+.pCommentContent {
+
+}
+
+.pCommentRe {
+    color:gray;
+    cursor:pointer;
+    clear:both;
+}
+
+.noPost, .noComment {
+    text-align: center;
+}
+
+#btnPostWrite, #btnPostWriteExit, #btnPostDelete, #btnPostUpdate {
+    z-index: 100;
+    float: right;
+    display: inline-block;
+    width: 100px; height: 50px;
+    text-align: center;
+    line-height: 50px;
+    background-color: #5C6069;
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    margin: 25px 25px 25px 0;
+}
+
+#wrapBtnPostWrite {
+    position: fixed;
+    top: 0; right:0;
+    min-width: 400px;
+    height: 100px;
+}

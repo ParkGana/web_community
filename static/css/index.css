@@ -1,0 +1,206 @@
+#mainImage {
+    width: 100vw;
+    min-width: 1130px;
+    opacity: 0.8;
+}
+
+#wrapIntroduce {
+    width: 100%; height: 100%;
+    clear: both;
+    min-width: 1130px;
+}
+
+#mainTitle {
+    font-size: 100px;
+    font-weight: bold;
+    color: white;
+    padding: 50px 0 0 100px;
+    animation: fadein 3s;
+}
+
+#introduceImg {
+    padding:50px 70px;
+    width:500px;
+}
+
+#introduceTitle {
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    padding-left: 25%;
+    animation: fadein 7s;
+}
+
+#introduceText {
+    font-size: 20px;
+    color: white;
+    padding-left: 30%;
+    animation: fadein 10s;
+}
+
+#wrapContent {
+    position: absolute;
+    top: 0; left: 0;
+    z-index: -1;
+    min-width: 1130px;
+}
+
+#wrapList {
+    width: 75%;
+    float: left;
+    display: inline-block;
+}
+
+#divCategory {
+    text-align: center;
+}
+
+.liCategory {
+    width: 8%; heigth: 70px;
+    line-height: 70px;
+    display: inline-block;
+    text-align: center;
+    border-bottom: 3px solid gray;
+    margin: 0 10px;
+}
+
+.liCategory:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#divList {
+    width: 100%;
+}
+
+#wrapUserLogout {
+    float: right;
+    display: inline-block;
+    width: 25%; height: 300px;
+    border: 5px solid lightgray;
+    border-radius: 30px 0 0 30px;
+    margin: 100px 0; padding: 10px;
+}
+
+#wrapUserLogin {
+    float: right;
+    display: inline-block;
+    width: 25%; height: 280px;
+    margin-top: 100px; padding: 10px;
+}
+
+#wrapFooter {
+    width: 95vw; height: 100px;
+    border-top: 2px solid #424242;
+    z-index: 100;
+    position: relative;
+    clear: both;
+    margin:0 auto;
+    text-align:center;
+    color:gray;
+    padding-top:20px;
+}
+
+.divFooter {
+    float:left;
+    padding:20px;
+}
+
+.divFooter:nth-child(1), .divFooter:nth-child(3) { width:15%; text-align:right; }
+.divFooter:nth-child(2), .divFooter:nth-child(4) { width:20%; text-align:left; }
+.divFooter:nth-child(5) { width:30%; text-align:center; }
+
+.iconFooter {
+	font-size:80px;
+}
+
+.aFooter {
+	display:inline-block;
+    color:#808080;
+	font-size:30px;
+	padding:10px;
+}
+
+.aFooter:hover {
+    color:#424242;
+}
+
+#wrapSearch {
+    clear: both;
+    margin-bottom: 50px;
+}
+
+#divSearch {
+    width: 500px; height: 50px;
+    float: right;
+    border-bottom: 3px solid lightgray;
+    margin: 0 50px 50px 0;
+}
+
+.row {
+    padding-left: 35px;
+}
+
+#userTitle {
+    font-size: 30px;
+    padding: 10px 0 30px 0;
+    text-align: center;
+}
+
+#wrapUserActive {
+    clear: both;
+    height: 70px;
+}
+
+.divUserActive {
+    display: inline-block;
+    float: left;
+    text-align: center;
+    width: 31%;
+    min-width: 60px;
+    border-left: 2px solid lightgray;
+}
+
+.divUserActive:first-child {
+    border: none;
+}
+
+#btnLogin {
+    display: inline-block;
+    width: 80%; height: 100px;
+    text-align: center;
+    line-height: 100px;
+    background-color: #5C6069;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+}
+
+#btnLogin:hover {
+    background-color: #424242;
+}
+
+#aMyPage, #aLogout, #aWrite {
+    color: gray;
+    display: inline-block;
+    width: 31%; height: 30px;
+    text-align: center;
+    float: left;
+    line-height: 30px;
+    margin-top: 20px;
+}
+
+#aMyPage:hover, #aLogout:hover, #aWrite:hover {
+    text-decoration: none;
+    color: gray;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

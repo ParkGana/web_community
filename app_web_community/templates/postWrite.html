@@ -1,0 +1,40 @@
+{% extends './layouts/navbar.html' %}
+
+
+{% block content %}
+    <form method="POST" action="#" id="formPostWrite">
+        <div id="wrapPostCategory">
+            <div id="divPostCategory">
+                <div class="form-group row selectCategory">
+                    <div class="col-sm-3">
+                        <select id="selectCommonCategory" name="selectCommonCategory" class="form-control">
+                            <option disabled selected hidden value="">공통 카테고리</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <select id="selectPersonalCategory" name="selectPersonalCategory" class="form-control">
+                            <option disabled selected hidden value="">사용자 카테고리</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="wrapPostWrite">
+            <div id="divPostTitle">
+                <input type="text" id="inputTitle" name="inputTitle" placeholder="제목을 입력해주세요" autocomplete="off">
+            </div>
+
+            <div id="divPostContent">
+                <textarea id="inputContent" name="inputContent" placeholder="내용을 입력해주세요"></textarea>
+                <textarea id="hiddenInputContent" disabled></textarea>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+
+{% block btn %}
+    <input type="submit" id="btnPostWriteExit" value="취소" data-toggle="modal" onclick="">
+    <input type="submit" id="btnPostWrite" value="저장" data-toggle="modal" onclick="">
+{% endblock %}

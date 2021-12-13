@@ -1,0 +1,85 @@
+.aAccount {
+    margin: 10px;
+    color: gray;
+}
+
+.aAccount:hover {
+    text-decoration: none;
+    color: gray;
+    font-weight: bold;
+}
+
+select {
+    float: left;
+}
+
+#wrapBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+#mainTitle {
+    display:inline-block;
+    width:100%;
+    font-weight: bold;
+    text-align: center;
+    font-size: 90px;
+    color:black;
+}
+
+#mainTitle:hover {
+    text-decoration:none;
+}
+
+#tblLogin {
+    margin: 50px;
+}
+
+.tdTitle {
+    text-align: center;
+}
+
+.tdInput {
+    padding: 0 10px;
+    min-width: 100px;
+}
+
+.inputLogin {
+    padding: 5px;
+    width: 200px;
+}
+
+#btnLogin {
+    width: 7vw; height: 7vh;
+    min-width: 100px; min-height: 100px;
+}
+
+#divError {
+    color: red;
+    padding-top: 10px;
+    text-align: center;
+}
+
+#divJoin {
+    padding: 20px;
+}
+
+#divGender {
+    padding: 8px 20px 0 20px;
+}
+
+#mainImage {
+    width: 100vw; height: 100vh;
+    min-width: 1130px;
+    opacity: 0.8;
+    position: absolute;
+    top: 0; left: 0;
+    z-index: -1;
+}
+
+i {
+    color: red;
+    font-weight: bold;
+}

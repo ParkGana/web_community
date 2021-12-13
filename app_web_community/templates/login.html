@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/account.css">
+</head>
+<body>
+    <div id="wrapBody">
+        <image src="/static/image/background_login.jpg" id="mainImage"></image>
+        <div id="wrapContent">
+            <a id="mainTitle" href="{% url 'index' %}">STORY</a>
+            <form method="POST" action="{% url 'login' %}" autocomplete="off">
+                <table id="tblLogin">
+                    <tr>
+                        <td class="tdTitle">아이디</td>
+                        <td class="tdInput"><input type="text" class="inputLogin" id="userID" name="userID" value=""/></td>
+                        <td rowspan="2"><button id="btnLogin" class="btn btn-primary" type="submit"><h5>로그인</h5></button></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">비밀번호</td>
+                        <td class="tdInput"><input type="password" class="inputLogin" id="userPassword" name="userPassword" value=""/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" id="divError"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" id="divJoin">
+                            <a class="aAccount" href="#" data-toggle="modal" data-target="">아이디 찾기</a>
+                            <a class="aAccount" href="#" data-toggle="modal" data-target="">비밀번호 찾기</a>
+                            <a class="aAccount" href="#" data-toggle="modal" data-target="#joinModal">회원가입</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal fade bd-example-modal-lg" id="joinModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">회원가입</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form autocomplete="off">
+                        <div class="form-group row">
+                            <label for="inputID" class="col-sm-3 col-form-label"><i>*</i> 아이디</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="inputID" name="inputID">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" id="btnCheckUserID" class="btn btn-primary" data-toggle="modal" onclick="">중복 확인</button>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label"><i>*</i> 비밀번호</label>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" id="inputPassword" name="inputPassword">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPasswordCheck" class="col-sm-3 col-form-label"><i>*</i> 비밀번호 확인</label>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" id="inputPasswordCheck" name="inputPasswordCheck">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputName" class="col-sm-3 col-form-label">이름</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="inputName" name="inputName">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputGender" class="col-sm-3 col-form-label"><i>*</i> 성별</label>
+                            <div class="col-sm-6" id="divGender">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" name="gender" id="male" value="M" class="custom-control-input">
+                                    <label class="custom-control-label" for="male">남자</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" name="gender" id="female" value="F" class="custom-control-input">
+                                    <label class="custom-control-label" for="female">여자</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputBirth" class="col-sm-3 col-form-label"><i>*</i> 생년월일</label>
+                            <div class="col-sm-2">
+                                <select id="inputYear" class="form-control">
+                                    <option disabled selected hidden value="">년</option>
+                                    {% for year in select_year_date %}
+                                        <option value="{{ year }}">{{ year }}년</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select id="inputMonth" class="form-control">
+                                    <option disabled selected hidden value="">월</option>
+                                    {% for month in select_month_date %}
+                                        <option value="{{ month }}">{{ month }}월</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select id="inputDay" class="form-control">
+                                    <option disabled selected hidden value="">일</option>
+                                    {% for day in select_day_date %}
+                                        <option value="{{ day }}">{{ day }}일</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail" class="col-sm-3 col-form-label"><i>*</i> 이메일</label>
+                            <div class="col-sm-6">
+                                <input type="email" class="form-control" id="inputEmail" name="inputEmail">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputTel" class="col-sm-3 col-form-label">전화번호</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="inputTel" name="inputTel">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <input type="hidden" id="checkUserID" value="unchecked">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" onclick="">취소</button>
+                    <button type="button" id="btnJoin" class="btn btn-primary" data-toggle="modal" onclick="">가입</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="alertModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">!!!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="alert_msg">Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
