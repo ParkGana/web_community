@@ -1,0 +1,51 @@
+{% if request.session.userID == request.session.post_userID %}
+    <div id="wrapCategorySetting">
+        <i id="userCategorySetting" class="fas fa-cog" onclick="toggleUserCategorySetting('open')"></i>
+        <i id="userCategorySettingClose" class="fas fa-times" onclick="toggleUserCategorySetting('close')"></i>
+    </div>
+{% endif %}
+
+<div class="divUserCategory" id="divCreateUserCategoryNew">카테고리 추가&nbsp;&nbsp;&nbsp;<i class="fas fa-plus" onclick="toggleCreateUserCategory('C', 0)"></i></div>
+
+<div class="divCreateUserCategory" id="divCreateUserCategory0">
+    <input type="text" class="createUserCategory" id="createUserCategory0" placeholder="카테고리명을 입력해주세요">
+    <button class="btnUserCategoryCreate" id="btnUserCategoryCreate0" onclick="createUserCategory('C', 0)">추가</button>
+</div>
+
+{% for category in per_category %}
+    <div class="divUserCategory" id="divUserCategory{{ category.PER_CATEGORY_ID }}" onclick="goCategoryPage(1, 'C', '{{ category.PER_CATEGORY_ID }}')">
+        {{ category.PER_CATEGORY_NAME }}
+        <i class="fas fa-trash-alt iUserCategory" id="iUserCategoryDelete{{ category.PER_CATEGORY_ID }}" data-toggle="modal" onclick="openDeleteUserCategory('C', {{ category.PER_CATEGORY_ID }})"></i>
+        <i class="fas fa-edit iUserCategory" id="iUserCategoryUpdate{{ category.PER_CATEGORY_ID }}" onclick="toggleUpdateUserCategory('C', {{ category.PER_CATEGORY_ID }})"></i>
+        <i class="fas fa-plus iUserCategory" id="iUserCategoryCreate{{ category.PER_CATEGORY_ID }}" onclick="toggleCreateUserCategory('R', {{ category.PER_CATEGORY_ID }})"></i>
+    </div>
+
+    <div class="divUpdateUserCategory" id="divUpdateUserCategory{{ category.PER_CATEGORY_ID }}">
+        <input type="text" class="updateUserCategory" id="updateUserCategory{{ category.PER_CATEGORY_ID }}" value="{{ category.PER_CATEGORY_NAME }}">
+        <button class="btnUserCategoryUpdate" id="btnUserCategoryUpdate{{ category.PER_CATEGORY_ID }}" onclick="updateUserCategory('C', {{ category.PER_CATEGORY_ID }})">수정</button>
+    </div>
+
+    <div class="divCreateUserCategoryRe" id="divCreateUserCategoryRe{{ category.PER_CATEGORY_ID }}">
+        <input type="text" class="createUserCategoryRe" id="createUserCategoryRe{{ category.PER_CATEGORY_ID }}" placeholder="카테고리명을 입력해주세요">
+        <button class="btnUserCategoryReCreate" id="btnUserCategoryReCreate{{ category.PER_CATEGORY_ID }}" onclick="createUserCategory('R', {{ category.PER_CATEGORY_ID }})">추가</button>
+    </div>
+
+    {% if per_category_re %}
+        <div class="wrapUserCategoryRe" id="wrapUserCategoryRe{{ category.PER_CATEGORY_ID }}">
+            {% for category_re in per_category_re %}
+                {% if category.PER_CATEGORY_ID == category_re.PARENT_PER_CATEGORY_ID %}
+                    <div class="divUserCategoryRe" id="divUserCategoryRe{{ category_re.PER_CATEGORY_ID }}" onclick="goCategoryPage(1, 'R', '{{ category_re.PER_CATEGORY_ID }}')">
+                        {{ category_re.PER_CATEGORY_NAME }}
+                        <i class="fas fa-trash-alt iUserCategory" id="iUserCategoryReDelete{{ category_re.PER_CATEGORY_ID }}" data-toggle="modal" onclick="openDeleteUserCategory('R', {{ category_re.PER_CATEGORY_ID }})"></i>
+                        <i class="fas fa-edit iUserCategory" id="iUserCategoryReUpdate{{ category_re.PER_CATEGORY_ID }}" data-toggle="modal" onclick="toggleUpdateUserCategory('R', {{ category_re.PER_CATEGORY_ID }})" ></i>
+                    </div>
+
+                    <div class="divUpdateUserCategoryRe" id="divUpdateUserCategoryRe{{ category_re.PER_CATEGORY_ID }}">
+                        <input type="text" class="updateUserCategoryRe" id="updateUserCategoryRe{{ category_re.PER_CATEGORY_ID }}"value="{{ category_re.PER_CATEGORY_NAME }}">
+                        <button class="btnUserCategoryReUpdate" id="btnUserCategoryReUpdateRe{{ category_re.PER_CATEGORY_ID }}" onclick="updateUserCategory('R', {{ category_re.PER_CATEGORY_ID }})">수정</button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endfor %}

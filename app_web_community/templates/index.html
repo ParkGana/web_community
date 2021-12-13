@@ -65,9 +65,13 @@
                             <div class="divUserActive">댓글<br>0</div>
                         </div>
                         <a id="aWrite" href="{% url 'postWrite' %}"><i class="far fa-edit"></i><br>글쓰기</a>
-                        <a id="aMyPage" href="#"><i class="fas fa-home"></i><br>마이홈</a>
+                        <a id="aMyPage" onclick="document.getElementById('formPostList').submit()"><i class="fas fa-home"></i><br>마이홈</a>
                         <a id="aLogout" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i><br>로그아웃</a>
                     </div>
+
+                    <form method="POST" action="{% url 'postList' %}" id="formPostList">
+                        <input type="hidden" name="userID" value="{{ request.session.userID }}">
+                    </form>
                 {% else %}
                     <div id="wrapUserLogin">
                         <a id="btnLogin" href="{% url 'login' %}">로그인</a>

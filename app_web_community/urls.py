@@ -14,5 +14,9 @@ urlpatterns = [
 
     path('post/list', postviews.postList, name="postList"),
     path('post/detail', postviews.postDetail, name="postDetail"),
-    path('post/write', postviews.postWrite, name="postWrite")
+    path('post/write', postviews.postWrite, name="postWrite"),
+    path('post/category', postviews.postCategory, name="postCategory"),
+    path('post/category/create', postviews.postCategoryCreate, name="postCategoryCreate"),
+    path('post/category/update', postviews.postCategoryUpdate, name="postCategoryUpdate"),
+    path('post/category/delete', postviews.postCategoryDelete, name="postCategoryDelete"),
 ]
