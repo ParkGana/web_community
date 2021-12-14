@@ -50,6 +50,8 @@
 
 
 {% block btn %}
-    <input type="submit" id="btnPostDelete" value="삭제" data-toggle="modal" onclick="deletePost()">
-    <input type="submit" id="btnPostUpdate" value="수정" onclick="document.getElementById('formPostUpdate').submit()">
+    {% if request.session.userID == post.USER_ID %}
+        <input type="submit" id="btnPostDelete" value="삭제" data-toggle="modal" onclick="deletePost()">
+        <input type="submit" id="btnPostUpdate" value="수정" onclick="document.getElementById('formPostUpdate').submit()">
+    {% endif %}
 {% endblock %}

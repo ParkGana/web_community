@@ -6,6 +6,7 @@ import app_web_community.views.postviews as postviews
 
 urlpatterns = [
     path('', indexviews.index, name='index'),
+    path('paging', indexviews.indexPaging, name='indexPaging'),
 
     path('login', accountviews.login.as_view(), name='login'),
     path('logout', accountviews.logout, name='logout'),

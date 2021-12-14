@@ -31,10 +31,12 @@
             <input type="hidden" id="userID" name="userID" value="{{ request.session.post_userID }}">
         </form>
 
-        <div id="userProfileBtn">
-            <a id="aWrite" href="{% url 'postWrite' %}"><i class="far fa-edit"></i><br>글쓰기</a>
-            <a id="aLogout" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i><br>로그아웃</a>
-        </div>
+        {% if request.session.userID == request.session.post_userID %}
+            <div id="userProfileBtn">
+                <a id="aWrite" href="{% url 'postWrite' %}"><i class="far fa-edit"></i><br>글쓰기</a>
+                <a id="aLogout" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i><br>로그아웃</a>
+            </div>
+        {% endif %}
     </div>
 
     <div id="wrapUserCategory"></div>

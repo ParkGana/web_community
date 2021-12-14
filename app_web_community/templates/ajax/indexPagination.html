@@ -1,0 +1,40 @@
+<div id="divList">
+    {% if pagination_data %}
+        {%  for data in pagination_data %}
+            <div class="divPost" onclick="document.getElementById('formPostDetail{{ data.POST_ID }}').submit();">
+                <p class="postTitle">{{ data.POST_TITLE }}</p>
+                <p class="postContent">{{ data.POST_CONTENT }}</p>
+            </div>
+            <form method="POST" action="{% url 'postDetail' %}" id="formPostDetail{{ data.POST_ID }}">
+                <input type="hidden" name="postID" value="{{ data.POST_ID }}">
+                <input type="hidden" name="userID" value="{{ data.USER_ID }}">
+            </form>
+        {% endfor %}
+    {% else %}
+        <div class="divPost">
+            <p class="noPost">조회 결과가 없습니다.</p>
+        </div>
+    {% endif %}
+</div>
+
+<div id="divPageNum">
+    <span class="step-links">
+        {% if now_block != 1 %}
+            <a onclick="goPage(1, '{{ category }}')" class="pageNum"><i class="fas fa-angle-double-left"></i></a>
+            <a onclick="goPage({{ prev_block }}, '{{ category }}')" class="pageNum"><i class="fas fa-angle-left"></i></a>
+        {% endif %}
+
+        {% for page in page_range %}
+            {% if page == now_page %}
+                <a onclick="goPage({{ page }}, '{{ category }}')" id="nowPageNum" class="pageNum">{{ page }}</a>
+            {% else %}
+                <a onclick="goPage({{ page }}, '{{ category }}')" class="pageNum">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if now_block < num_block %}
+            <a onclick="goPage({{ next_block }}, '{{ category }}')" class="pageNum"><i class="fas fa-angle-right"></i></a>
+            <a onclick="goPage({{ pagination_data.paginator.num_pages }}, '{{ category }}')" class="pageNum"><i class="fas fa-angle-double-right"></i></a>
+        {% endif %}
+    </span>
+</div>
