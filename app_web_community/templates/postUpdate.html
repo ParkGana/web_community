@@ -1,0 +1,67 @@
+{% extends './includes/post.html' %}
+
+
+{% block content %}
+    <form method="POST" action="{% url 'postUpdate' %}" id="formPostUpdate">
+        {% csrf_token %}
+        <div id="wrapPostCategory">
+            <div id="divPostCategory">
+                <div class="form-group row selectCategory">
+                    <div class="col-sm-3">
+                        <select id="selectCommonCategory" name="selectCommonCategory" class="form-control">
+                            {% for category in com_category %}
+                                {% if post.COM_CATEGORY_ID == category.COM_CATEGORY_ID %}
+                                    <option value="{{ category.COM_CATEGORY_ID }}" selected>{{ category.COM_CATEGORY_NAME }}</option>
+                                {% else %}
+                                    <option value="{{ category.COM_CATEGORY_ID }}">{{ category.COM_CATEGORY_NAME }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <select id="selectPersonalCategory" name="selectPersonalCategory" class="form-control">
+                            {% for category in per_category %}
+                                {% if post.PER_CATEGORY_ID == category.PER_CATEGORY_ID %}
+                                    <option value="{{ category.PER_CATEGORY_ID }}" selected>{{ category.PER_CATEGORY_NAME }}</option>
+                                {% else %}
+                                    <option value="{{ category.PER_CATEGORY_ID }}">{{ category.PER_CATEGORY_NAME }}</option>
+                                {% endif %}
+                                {% for category_re in per_category_re %}
+                                    {% if category.PER_CATEGORY_ID == category_re.PARENT_PER_CATEGORY_ID %}
+                                        {% if post.PER_CATEGORY_ID == category_re.PER_CATEGORY_ID %}
+                                            <option value="{{ category_re.PER_CATEGORY_ID }}" selected> - {{ category_re.PER_CATEGORY_NAME }}</option>
+                                        {% else %}
+                                            <option value="{{ category_re.PER_CATEGORY_ID }}"> - {{ category_re.PER_CATEGORY_NAME }}</option>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="wrapPostWrite">
+            <div id="divPostTitle">
+                <input type="text" id="inputTitle" name="inputTitle" value="{{ post.POST_TITLE }}">
+            </div>
+
+            <div id="divPostContent">
+                <textarea id="inputContent" name="inputContent" onkeyup="postContentResize(this)" >{{ post.POST_CONTENT }}</textarea>
+                <textarea id="hiddenInputContent" disabled></textarea>
+            </div>
+        </div>
+        <input type="hidden" name="postID" value="{{ post.POST_ID }}">
+    </form>
+
+    <form method="POST" action="{% url 'postList' %}" id="formPostBack">
+        <input type="hidden" name="userID" value="{{ request.session.userID }}">
+    </form>
+{% endblock %}
+
+
+{% block btn %}
+    <input type="submit" id="btnPostWriteExit" value="취소" data-toggle="modal" onclick="cancelUpdatePost()">
+    <input type="submit" id="btnPostWrite" value="저장" onclick="document.getElementById('formPostUpdate').submit()">
+{% endblock %}

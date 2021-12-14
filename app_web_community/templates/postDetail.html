@@ -3,30 +3,53 @@
 
 {% block content %}
     <div id="wrapPostCategory">
-        <div id="divPostCategory"></div>
+        <div id="divPostCategory">
+            {% for category in com_category %}
+                {% if post.COM_CATEGORY_ID == category.COM_CATEGORY_ID %}
+                    <p id="pCommonCategory">{{ category.COM_CATEGORY_NAME }}</p>
+                {% endif %}
+            {% endfor %}
+            {% for category_re in per_category_re %}
+                {% if post.PER_CATEGORY_ID == category_re.PER_CATEGORY_ID %}
+                    {% for category in per_category %}
+                        {% if category.PER_CATEGORY_ID == category_re.PARENT_PER_CATEGORY_ID %}
+                            <p type="text" id="pPersonalCategory">{{ category.PER_CATEGORY_NAME }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    <p type="text" id="pPersonalCategoryRe">{{ category_re.PER_CATEGORY_NAME }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 
     <div id="wrapPostWrite">
         <div id="divPostTitle">
-            <input type="text" id="inputTitle" value="" readonly>
+            <input type="text" id="inputTitle" value="{{ post.POST_TITLE }}" readonly>
         </div>
 
         <div id="divPostInfo">
-            <p class="pPostInfo"></p>
+            <p class="pPostInfo">{{ post.USER_ID }}</p>
             <p class="pPostInfo">|</p>
-            <p class="pPostInfo">최초 작성일 : </p>
+            <p class="pPostInfo">최초 작성일 : {{ post.POST_WRITE_DATE|date:'Y.m.d H:i:s' }}</p>
             <p class="pPostInfo">|</p>
-            <p class="pPostInfo">최종 수정일 : </p>
+            <p class="pPostInfo">최종 수정일 : {{ post.POST_UPDATE_DATE|date:'Y.m.d H:i:s' }}</p>
         </div>
 
         <div id="divPostContent">
-            <textarea id="inputContent" readonly></textarea>
+            <textarea id="inputContent" readonly>{{ post.POST_CONTENT }}</textarea>
         </div>
+
+        <form method="POST" action="{% url 'postDelete' %}" id="formPostDelete">
+            <input type="hidden" name="postID" value="{{ post.POST_ID }}">
+        </form>
+        <form method="GET" action="{% url 'postUpdate' %}" id="formPostUpdate">
+            <input type="hidden" name="postID" value="{{ post.POST_ID }}">
+        </form>
     </div>
 {% endblock %}
 
 
 {% block btn %}
-    <input type="submit" id="btnPostDelete" value="삭제" onclick="">
-    <input type="submit" id="btnPostUpdate" value="수정" onclick="">
+    <input type="submit" id="btnPostDelete" value="삭제" data-toggle="modal" onclick="deletePost()">
+    <input type="submit" id="btnPostUpdate" value="수정" onclick="document.getElementById('formPostUpdate').submit()">
 {% endblock %}

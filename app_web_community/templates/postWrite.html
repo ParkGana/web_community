@@ -2,18 +2,30 @@
 
 
 {% block content %}
-    <form method="POST" action="#" id="formPostWrite">
+    <form method="POST" action="{% url 'postWrite' %}" id="formPostWrite">
+        {% csrf_token %}
         <div id="wrapPostCategory">
             <div id="divPostCategory">
                 <div class="form-group row selectCategory">
                     <div class="col-sm-3">
                         <select id="selectCommonCategory" name="selectCommonCategory" class="form-control">
                             <option disabled selected hidden value="">공통 카테고리</option>
+                            {% for category in com_category %}
+                                <option value="{{ category.COM_CATEGORY_ID }}">{{ category.COM_CATEGORY_NAME }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col-sm-3">
                         <select id="selectPersonalCategory" name="selectPersonalCategory" class="form-control">
                             <option disabled selected hidden value="">사용자 카테고리</option>
+                            {% for category in per_category %}
+                                <option value="{{ category.PER_CATEGORY_ID }}">{{ category.PER_CATEGORY_NAME }}</option>
+                                {% for category_re in per_category_re %}
+                                    {% if category.PER_CATEGORY_ID == category_re.PARENT_PER_CATEGORY_ID %}
+                                        <option value="{{ category_re.PER_CATEGORY_ID }}"> - {{ category_re.PER_CATEGORY_NAME }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -26,15 +38,19 @@
             </div>
 
             <div id="divPostContent">
-                <textarea id="inputContent" name="inputContent" placeholder="내용을 입력해주세요"></textarea>
+                <textarea id="inputContent" name="inputContent" placeholder="내용을 입력해주세요" onkeyup="postContentResize(this)"></textarea>
                 <textarea id="hiddenInputContent" disabled></textarea>
             </div>
         </div>
+    </form>
+
+    <form method="POST" action="{% url 'postList' %}" id="formPostBack">
+        <input type="hidden" name="userID" value="{{ request.session.userID }}">
     </form>
 {% endblock %}
 
 
 {% block btn %}
-    <input type="submit" id="btnPostWriteExit" value="취소" data-toggle="modal" onclick="">
-    <input type="submit" id="btnPostWrite" value="저장" data-toggle="modal" onclick="">
+    <input type="submit" id="btnPostWriteExit" value="취소" data-toggle="modal" onclick="cancelWritePost()">
+    <input type="submit" id="btnPostWrite" value="저장" data-toggle="modal" onclick="writePost()">
 {% endblock %}

@@ -1,6 +1,118 @@
 $(document).ready(function() {
     getUserCategory();
+    goPage(1);
 });
+
+
+/***********************************************************************************************
+ * 게시글 페이징
+ ***********************************************************************************************/
+function goPage(page) {
+    $.ajax({
+        type: 'GET',
+        url: 'paging',
+        data: {
+            'page': page,
+        },
+        success: function(response) {
+            $('#wrapList').html(response);
+
+            // 페이지 번호 선택 시, 게시물 상단 위치로 페이지 이동
+            $(".pageNum").click(function() {
+                var offset = $('#wrapMainBody').offset();
+
+               $('html, body').animate({scrollTop : offset.top - 20}, 700);
+
+               return false;
+            });
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+
+/***********************************************************************************************
+ * 게시글 입력 내용 크기에 맞게 textarea 크기 자동 조절
+ ***********************************************************************************************/
+ function postContentResize(e) {
+    var xe = document.getElementById('hiddenInputContent');
+
+    xe.value = e.value;
+    e.style.height = (xe.scrollHeight + 100) + 'px';
+
+    if (xe.scrollHeight < 500) {
+        e.style.height = 500 + 'px';
+    }
+}
+
+
+/***********************************************************************************************
+ * 게시글 작성
+ ***********************************************************************************************/
+ function writePost() {
+    var btn_write_post = document.getElementById('btnPostWrite');
+    var com_category = $("#selectCommonCategory").val();
+    var per_category = $("#selectPersonalCategory").val();
+
+    if(com_category == null) {
+        $("#alert_warning_msg").html("공통 카테고리를 선택해 주세요.");
+        btn_write_post.setAttribute('data-target', '#alertWarningModal');
+        return;
+    }
+    if(per_category == null) {
+        $("#alert_warning_msg").html("사용자 카테고리를 선택해 주세요.");
+        btn_write_post.setAttribute('data-target', '#alertWarningModal');
+        return;
+    }
+
+    btn_write_post.removeAttribute('data-target');
+    btn_write_post.setAttribute('onclick','document.getElementById("formPostWrite").submit()');
+    btn_write_post.onclick();
+}
+
+
+/***********************************************************************************************
+ * 게시글 작성 취소
+ ***********************************************************************************************/
+ function cancelWritePost() {
+    var btn_cancel_write_post = document.getElementById('btnModalYes');
+
+    $("#alert_check_msg").html("작성한 데이터가 모두 지워집니다.<br>정말로 나가겠습니까?");
+    document.getElementById('btnPostWriteExit').setAttribute('data-target', '#alertCheckModal');
+    btn_cancel_write_post.setAttribute('onclick','document.getElementById("formPostBack").submit()');
+    
+    return;
+}
+
+
+/***********************************************************************************************
+ * 게시글 수정 취소
+ ***********************************************************************************************/
+ function cancelUpdatePost() {
+    var btn_cancel_update_post = document.getElementById('btnModalYes');
+
+    $("#alert_check_msg").html("수정한 데이터가 모두 지워집니다.<br>정말로 나가겠습니까?");
+    document.getElementById('btnPostWriteExit').setAttribute('data-target', '#alertCheckModal');
+    btn_cancel_update_post.setAttribute('onclick','document.getElementById("formPostBack").submit()');
+    
+    return;
+}
+
+
+/***********************************************************************************************
+ * 게시글 삭제
+ ***********************************************************************************************/
+function deletePost() {
+    var btn_delete_post = document.getElementById('btnModalYes');
+
+    $("#alert_check_msg").html("삭제된 데이터는 복구할 수 없습니다.<br>정말로 삭제하시겠습니까?");
+    document.getElementById('btnPostDelete').setAttribute('data-target', '#alertCheckModal');
+    btn_delete_post.setAttribute('onclick','document.getElementById("formPostDelete").submit()');
+    
+    return;
+}
 
 
 /***********************************************************************************************
