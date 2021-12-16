@@ -6,6 +6,7 @@ import datetime
 
 from app_web_community.models import User
 
+
 #로그인
 class login(View):
     @csrf_exempt
@@ -100,7 +101,7 @@ def join(request):
         return JsonResponse({"message": "DUPLICATE_DATA"}, status=409)
 
 
-# 아이디 중복 체크
+# 회원가입 유효성 검사 - 아이디 중복 확인
 @csrf_exempt
 def checkUserID(request):
     user_id = request.POST.get('user_id')

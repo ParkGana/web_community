@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from app_web_community.models import Post, ComCategory, Like, Comment
 
+
 # 메인 페이지
 @csrf_exempt
 def index(request):

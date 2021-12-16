@@ -20,13 +20,9 @@ function goPage(page) {
             $('#wrapList').html(response);
 
             // 페이지 번호 선택 시, 게시물 상단 위치로 페이지 이동
-            $(".pageNum").click(function() {
-                var offset = $('#wrapMainBody').offset();
-
-               $('html, body').animate({scrollTop : offset.top - 20}, 700);
-
-               return false;
-            });
+            var offset = $('#wrapMainBody').offset();
+            $('html, body').animate({scrollTop : offset.top - 20}, 700);
+            return false;
         },
         error: function(err) {
             console.log(err);
@@ -69,212 +65,9 @@ function goSearch(page) {
             $('#divPagination').html(response);
 
             // 페이지 번호 선택 시, 게시물 상단 위치로 페이지 이동
-            $(".pageNum").click(function() {
-                var offset = $('#wrapMainBody').offset();
-
-               $('html, body').animate({scrollTop : offset.top - 20}, 700);
-
-               return false;
-            });
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    });
-}
-
-
-/***********************************************************************************************
- * 게시글 좋아요 정보
- ***********************************************************************************************/
-function getLike() {
-    var post_id = $("#post_id").val();
-
-    $.ajax({
-        type: 'POST',
-        url: 'like',
-        data: {
-            'post_id': post_id,
-        },
-        success: function(response) {
-            $('#wrapLike').html(response);
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    });
-}
-
-
-/***********************************************************************************************
- * 게시글 좋아요
- ***********************************************************************************************/
-function likePost(state) {
-    var post_id = $("#post_id").val();
-    var post_user_id = $("#post_user_id").val();
-    var user_id = $("#user_id").val();
-    var alert_btn;
-
-    if(state == 'Y') {
-        alert_btn = document.getElementById('divThumbsUp');
-    }
-    else {
-        alert_btn = document.getElementById('divThumbsDown');
-    }
-
-    if(post_user_id == user_id) {
-        $("#alert_warning_msg").text("본인의 게시글에서는 불가능합니다.");
-        alert_btn.setAttribute('data-target', '#alertWarningModal');
-        return;
-    }
-
-    alert_btn.removeAttribute('data-target');
-
-    $.ajax({
-        type: 'POST',
-        url: 'like/choice',
-        data: {
-            'post_id': post_id,
-            'state': state
-        },
-        success: function() {
-            getLike();
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    });
-}
-
-
-/***********************************************************************************************
- * 게시글 댓글 상세정보
- ***********************************************************************************************/
-function getComment() {
-    var post_id = $("#post_id").val();
-
-    $.ajax({
-        type: 'POST',
-        url: 'comment',
-        data: {
-            'post_id': post_id,
-        },
-        success: function(response) {
-            $('#wrapCommentList').html(response);
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    });
-}
-
-
-/***********************************************************************************************
- * 게시글 댓글 작성
- ***********************************************************************************************/
-function writeComment(state, comment_id) {
-    var post_id = $("#post_id").val();
-
-    if (state == 'C') {
-        var comment_content = $("#inputComment").val();
-
-        if(comment_content == '') {
-            $("#alert_warning_msg").text("댓글을 입력해주세요.");
-            document.getElementById('btnCommentWrite').setAttribute('data-target', '#alertWarningModal');
-            return;
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: 'comment/write',
-            data: {
-                'post_id': post_id,
-                'comment_content': comment_content,
-                'state': state
-            },
-            success: function() {
-                getComment();
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        });
-    }
-    else if (state == 'R') {
-        var comment_content = $("#inputCommentRe" + comment_id).val();
-
-        if(comment_content == '') {
-            $("#alert_warning_msg").text("답글을 입력해주세요.");
-            document.getElementById('btnCommentReWrite' + parent).setAttribute('data-target', '#alertWarningModal');
-            return;
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: 'comment/write',
-            data: {
-                'post_id': post_id,
-                'comment_content': comment_content,
-                'state': state,
-                'parent_comment_id': comment_id
-            },
-            success: function() {
-                getComment();
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        });
-    }
-}
-
-
-/***********************************************************************************************
- * 게시글 댓글에 달린 답글 영역 접고 펼치기
- ***********************************************************************************************/
-function toggleCommentRe(comment_id) {
-    var div_comment_re = $("#wrapCommentRe" + comment_id);
-    var i_comment_re = $("#i" + comment_id);
-
-    if (div_comment_re.css('display') == 'none') {
-        i_comment_re.attr('class', "fas fa-angle-up");
-    }
-    else {
-        i_comment_re.attr('class', "fas fa-angle-down");
-    }
-
-    div_comment_re.toggle();
-}
-
-
-/***********************************************************************************************
- * 게시글 댓글에 답글 작성하는 영역 접고 펼치기
- ***********************************************************************************************/
-function toggleCommentReWrite(comment_id) {
-    var div_input_comment_re = $("#divInputCommentRe" + comment_id);
-
-    div_input_comment_re.toggle();
-
-    if (div_input_comment_re.css('display') == 'block') {
-        div_input_comment_re.css('display', 'inline-block');
-    }
-}
-
-
-/***********************************************************************************************
- * 게시글 댓글 삭제
- ***********************************************************************************************/
-function deleteComment(state, comment_id, parent_comment_id) {
-    $.ajax({
-        type: 'POST',
-        url: 'comment/delete',
-        data: {
-            'comment_id': comment_id,
-            'parent_comment_id': parent_comment_id,
-            'state': state
-        },
-        success: function() {
-            getComment();
+            var offset = $('#wrapMainBody').offset();
+            $('html, body').animate({scrollTop : offset.top - 20}, 700);
+            return false;
         },
         error: function(err) {
             console.log(err);
@@ -366,6 +159,227 @@ function deletePost() {
 
 
 /***********************************************************************************************
+ * 게시글 좋아요 목록
+ ***********************************************************************************************/
+ function getLike() {
+    var post_id = $("#post_id").val();
+
+    $.ajax({
+        type: 'POST',
+        url: 'like',
+        data: {
+            'post_id': post_id,
+        },
+        success: function(response) {
+            $('#wrapLike').html(response);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+
+/***********************************************************************************************
+ * 게시글 좋아요
+ ***********************************************************************************************/
+function likePost(state) {
+    var post_id = $("#post_id").val();
+    var post_user_id = $("#post_user_id").val();
+    var user_id = $("#user_id").val();
+    var alert_btn;
+
+    if(state == 'Y') {
+        alert_btn = document.getElementById('divThumbsUp');
+    }
+    else {
+        alert_btn = document.getElementById('divThumbsDown');
+    }
+
+    if(post_user_id == user_id) {
+        $("#alert_warning_msg").text("본인의 게시글에서는 불가능합니다.");
+        alert_btn.setAttribute('data-target', '#alertWarningModal');
+        return;
+    }
+
+    alert_btn.removeAttribute('data-target');
+
+    $.ajax({
+        type: 'POST',
+        url: 'like/choice',
+        data: {
+            'post_id': post_id,
+            'state': state
+        },
+        success: function() {
+            getLike();
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+
+/***********************************************************************************************
+ * 게시글 댓글 목록
+ ***********************************************************************************************/
+function getComment() {
+    var post_id = $("#post_id").val();
+
+    $.ajax({
+        type: 'POST',
+        url: 'comment',
+        data: {
+            'post_id': post_id,
+        },
+        success: function(response) {
+            $('#wrapCommentList').html(response);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+
+/***********************************************************************************************
+ * 게시글 댓글에 달린 답글 영역 접고 펼치기
+ ***********************************************************************************************/
+ function toggleCommentRe(comment_id) {
+    var div_comment_re = $("#wrapCommentRe" + comment_id);
+    var i_comment_re = $("#i" + comment_id);
+
+    if (div_comment_re.css('display') == 'none') {
+        i_comment_re.attr('class', "fas fa-angle-up");
+    }
+    else {
+        i_comment_re.attr('class', "fas fa-angle-down");
+    }
+
+    div_comment_re.toggle();
+}
+
+
+/***********************************************************************************************
+ * 게시글 댓글에 답글 작성하는 영역 접고 펼치기
+ ***********************************************************************************************/
+function toggleCommentReWrite(comment_id) {
+    var div_input_comment_re = $("#divInputCommentRe" + comment_id);
+
+    div_input_comment_re.toggle();
+
+    if (div_input_comment_re.css('display') == 'block') {
+        div_input_comment_re.css('display', 'inline-block');
+    }
+}
+
+
+/***********************************************************************************************
+ * 게시글 댓글 작성
+ ***********************************************************************************************/
+function writeComment(state, comment_id) {
+    var post_id = $("#post_id").val();
+
+    if (state == 'C') {
+        var comment_content = $("#inputComment").val();
+
+        if(comment_content == '') {
+            $("#alert_warning_msg").text("댓글을 입력해주세요.");
+            document.getElementById('btnCommentWrite').setAttribute('data-target', '#alertWarningModal');
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'comment/write',
+            data: {
+                'post_id': post_id,
+                'comment_content': comment_content,
+                'state': state
+            },
+            success: function() {
+                getComment();
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+    else if (state == 'R') {
+        var comment_content = $("#inputCommentRe" + comment_id).val();
+
+        if(comment_content == '') {
+            $("#alert_warning_msg").text("답글을 입력해주세요.");
+            document.getElementById('btnCommentReWrite' + parent).setAttribute('data-target', '#alertWarningModal');
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'comment/write',
+            data: {
+                'post_id': post_id,
+                'comment_content': comment_content,
+                'state': state,
+                'parent_comment_id': comment_id
+            },
+            success: function() {
+                getComment();
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+}
+
+
+/***********************************************************************************************
+ * 게시글 댓글 삭제
+ ***********************************************************************************************/
+function deleteComment(state, comment_id, parent_comment_id) {
+    $.ajax({
+        type: 'POST',
+        url: 'comment/delete',
+        data: {
+            'comment_id': comment_id,
+            'parent_comment_id': parent_comment_id,
+            'state': state
+        },
+        success: function() {
+            getComment();
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+
+/***********************************************************************************************
+ * 사용자 카테고리 목록
+ ***********************************************************************************************/
+ function getUserCategory() {
+    var user_id = $("#userID").val();
+
+    $.ajax({
+        type: 'POST',
+        url: 'category',
+        data: {
+            'user_id': user_id,
+        },
+        success: function(response) {
+            $('#wrapUserCategory').html(response);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+
+/***********************************************************************************************
  * 사용자 카테고리 영역 접고 펼치기
  ***********************************************************************************************/
 function toggleUserCategory() {
@@ -389,28 +403,6 @@ function toggleUserCategorySetting(state) {
         $('#divCreateUserCategoryNew').hide();
         $('.iUserCategory').hide();
     }
-}
-
-
-/***********************************************************************************************
- * 사용자 카테고리 가져오기
- ***********************************************************************************************/
-function getUserCategory() {
-    var user_id = $("#userID").val();
-
-    $.ajax({
-        type: 'POST',
-        url: 'category',
-        data: {
-            'user_id': user_id,
-        },
-        success: function(response) {
-            $('#wrapUserCategory').html(response);
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    });
 }
 
 
@@ -455,13 +447,9 @@ function goCategoryPage(page, state, per_category_id) {
             $('#wrapList').html(response);
 
             // 페이지 번호 선택 시, 게시물 상단 위치로 페이지 이동
-            $(".pageNum").click(function() {
-                var offset = $('#wrapMainBody').offset();
-
-               $('html, body').animate({scrollTop : offset.top - 20}, 700);
-
-               return false;
-            });
+            var offset = $('#wrapMainBody').offset();
+            $('html, body').animate({scrollTop : offset.top - 20}, 700);
+            return false;
         },
         error: function(err) {
             console.log(err);

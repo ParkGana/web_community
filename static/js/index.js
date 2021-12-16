@@ -18,13 +18,9 @@ $(document).ready(function() {
             $('#divPagination').html(response);
 
             // 페이지 번호 선택 시, 게시물 상단 위치로 페이지 이동
-            $(".pageNum").click(function() {
-                var offset = $('#wrapMainBody').offset();
-
-               $('html, body').animate({scrollTop : offset.top - 20}, 700);
-
-               return false;
-            });
+            var offset = $('#wrapMainBody').offset();
+            $('html, body').animate({scrollTop : offset.top - 20}, 700);
+            return false;
         },
         error: function(err) {
             console.log(err);
@@ -67,13 +63,9 @@ function goSearch(page) {
             $('#divPagination').html(response);
 
             // 페이지 번호 선택 시, 게시물 상단 위치로 페이지 이동
-            $(".pageNum").click(function() {
-                var offset = $('#wrapMainBody').offset();
-
-               $('html, body').animate({scrollTop : offset.top - 20}, 700);
-
-               return false;
-            });
+            var offset = $('#wrapMainBody').offset();
+            $('html, body').animate({scrollTop : offset.top - 20}, 700);
+            return false;
         },
         error: function(err) {
             console.log(err);
