@@ -1,0 +1,43 @@
+<div id="divCategory">{{ per_category.PER_CATEGORY_NAME }}&nbsp;&nbsp;&nbsp;{{ per_category_re.PER_CATEGORY_NAME }}&nbsp;&nbsp;&nbsp;[ {{ post_cnt }} ]</div>
+<div id="divPagination">
+    <div id="divList">
+        {% if pagination_data %}
+            {%  for data in pagination_data %}
+                <div class="divPost" onclick="document.getElementById('formPostDetail{{ data.POST_ID }}').submit();">
+                    <p class="postTitle">{{ data.POST_TITLE }}</p>
+                    <p class="postContent">{{ data.POST_CONTENT }}</p>
+                </div>
+                <form method="POST" action="{% url 'postDetail' %}" id="formPostDetail{{ data.POST_ID }}">
+                    <input type="hidden" name="postID" value="{{ data.POST_ID }}">
+                    <input type="hidden" name="userID" value="{{ data.USER_ID }}">
+                </form>
+            {% endfor %}
+        {% else %}
+            <div class="divPost">
+                <p class="noPost">조회 결과가 없습니다.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div id="divPageNum">
+        <span class="step-links">
+            {% if now_block != 1 %}
+                <a onclick="goCategoryPage(1, 'R', '{{ per_category_re.PER_CATEGORY_ID }}')" class="pageNum"><i class="fas fa-angle-double-left"></i></a>
+                <a onclick="goCategoryPage({{ prev_block }}, 'R', '{{ per_category_re.PER_CATEGORY_ID }}')" class="pageNum"><i class="fas fa-angle-left"></i></a>
+            {% endif %}
+
+            {% for page in page_range %}
+                {% if page == now_page %}
+                    <a onclick="goCategoryPage({{ page }}, 'R', '{{ per_category_re.PER_CATEGORY_ID }}')" id="nowPageNum" class="pageNum">{{ page }}</a>
+                {% else %}
+                    <a onclick="goCategoryPage({{ page }}, 'R', '{{ per_category_re.PER_CATEGORY_ID }}')" class="pageNum">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if now_block < num_block %}
+                <a onclick="goCategoryPage({{ next_block }}, 'R', '{{ per_category_re.PER_CATEGORY_ID }}')" class="pageNum"><i class="fas fa-angle-right"></i></a>
+                <a onclick="goCategoryPage({{ pagination_data.paginator.num_pages }}, 'R', '{{ per_category_re.PER_CATEGORY_ID }}')" class="pageNum"><i class="fas fa-angle-double-right"></i></a>
+            {% endif %}
+        </span>
+    </div>
+</div>

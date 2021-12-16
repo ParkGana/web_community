@@ -22,6 +22,7 @@ urlpatterns = [
     path('post/update', postviews.postUpdate.as_view(), name='postUpdate'),
     path('post/delete', postviews.postDelete, name='postDelete'),
     path('post/category', postviews.postCategory, name='postCategory'),
+    path('post/category/paging', postviews.postCategoryPaging, name='postCategoryPaging'),
     path('post/category/create', postviews.postCategoryCreate, name='postCategoryCreate'),
     path('post/category/update', postviews.postCategoryUpdate, name='postCategoryUpdate'),
     path('post/category/delete', postviews.postCategoryDelete, name='postCategoryDelete'),

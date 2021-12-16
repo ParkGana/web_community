@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import timezone
+from django.db.models import Q, Subquery
 import datetime
 
 from app_web_community.models import ComCategory, Post, PerCategory
@@ -282,6 +283,131 @@ def postCategory(request):
     }
 
     return render(request, 'ajax/postCategory.html', context=context)
+
+
+# 사용자 카테고리 게시글 페이징
+@csrf_exempt
+def postCategoryPaging(request):
+    page = int(request.POST.get('page'))
+    state = request.POST.get('state')
+    per_category_id = request.POST.get('per_category_id')
+    user_id = request.session.get('post_userID')
+
+    if state == 'C':
+        search_condition = Q()
+
+        search_condition.add(Q(PER_CATEGORY_ID=per_category_id), search_condition.OR)
+        search_condition.add(Q(PARENT_PER_CATEGORY_ID=per_category_id), search_condition.OR)
+
+        post = Post.objects.filter(USER_ID=user_id, PER_CATEGORY_ID__in=Subquery(PerCategory.objects.filter(search_condition).values('PER_CATEGORY_ID'))).values('POST_ID', 'USER_ID', 'POST_TITLE', 'POST_CONTENT').order_by('-POST_WRITE_DATE')
+
+        post_cnt = post.count()
+
+        per_category = PerCategory.objects.filter(PER_CATEGORY_ID=per_category_id).values('PER_CATEGORY_ID', 'PER_CATEGORY_NAME')[0]
+
+        paginator = Paginator(post, 5)
+
+        try:
+            pagination_data = paginator.page(page)
+        except PageNotAnInteger:
+            pagination_data = paginator.page(1)
+        except EmptyPage:
+            pagination_data = paginator.page(paginator.num_pages)
+
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        start_index = int((page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+
+        if end_index >= max_index:
+            end_index = max_index
+
+        page_range = paginator.page_range[start_index:end_index]
+
+        if (pagination_data.paginator.num_pages / page_numbers_range) == (
+            pagination_data.paginator.num_pages // page_numbers_range):
+            num_block = pagination_data.paginator.num_pages // page_numbers_range
+        else:
+            num_block = pagination_data.paginator.num_pages // page_numbers_range + 1
+
+        if (page / page_numbers_range) == (page // page_numbers_range):
+            prev_block = (page // page_numbers_range - 1) * page_numbers_range
+            next_block = (page // page_numbers_range) * page_numbers_range + 1
+            now_block = page // page_numbers_range
+        else:
+            prev_block = (page // page_numbers_range) * page_numbers_range
+            next_block = (page // page_numbers_range + 1) * page_numbers_range + 1
+            now_block = page // page_numbers_range + 1
+
+        context = {
+            'now_page': page,
+            'pagination_data': pagination_data,
+            'page_range': page_range,
+            'num_block': num_block,
+            'now_block': now_block,
+            'prev_block': prev_block,
+            'next_block': next_block,
+            'post_cnt': post_cnt,
+            'per_category': per_category
+        }
+
+        return render(request, 'ajax/postCategoryPagination.html', context=context)
+    elif state == 'R':
+        post = Post.objects.filter(USER_ID=user_id, PER_CATEGORY_ID=per_category_id).values('POST_ID', 'USER_ID', 'POST_TITLE', 'POST_CONTENT').order_by('-POST_WRITE_DATE')
+
+        post_cnt = post.count()
+
+        per_category = PerCategory.objects.filter(PER_CATEGORY_ID=Subquery(PerCategory.objects.filter(PER_CATEGORY_ID=per_category_id).values('PARENT_PER_CATEGORY_ID'))).values('PER_CATEGORY_ID', 'PER_CATEGORY_NAME')[0]
+        per_category_re = PerCategory.objects.filter(PER_CATEGORY_ID=per_category_id).values('PER_CATEGORY_ID', 'PER_CATEGORY_NAME')[0]
+
+        paginator = Paginator(post, 5)
+
+        try:
+            pagination_data = paginator.page(page)
+        except PageNotAnInteger:
+            pagination_data = paginator.page(1)
+        except EmptyPage:
+            pagination_data = paginator.page(paginator.num_pages)
+
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        start_index = int((page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+
+        if end_index >= max_index:
+            end_index = max_index
+
+        page_range = paginator.page_range[start_index:end_index]
+
+        if (pagination_data.paginator.num_pages / page_numbers_range) == (
+            pagination_data.paginator.num_pages // page_numbers_range):
+            num_block = pagination_data.paginator.num_pages // page_numbers_range
+        else:
+            num_block = pagination_data.paginator.num_pages // page_numbers_range + 1
+
+        if (page / page_numbers_range) == (page // page_numbers_range):
+            prev_block = (page // page_numbers_range - 1) * page_numbers_range
+            next_block = (page // page_numbers_range) * page_numbers_range + 1
+            now_block = page // page_numbers_range
+        else:
+            prev_block = (page // page_numbers_range) * page_numbers_range
+            next_block = (page // page_numbers_range + 1) * page_numbers_range + 1
+            now_block = page // page_numbers_range + 1
+
+        context = {
+            'now_page': page,
+            'pagination_data': pagination_data,
+            'page_range': page_range,
+            'num_block': num_block,
+            'now_block': now_block,
+            'prev_block': prev_block,
+            'next_block': next_block,
+            'post_cnt': post_cnt,
+            'per_category': per_category,
+            'per_category_re': per_category_re
+        }
+
+        return render(request, 'ajax/postCategoryRePagination.html', context=context)
 
 
 # 사용자 카테고리 생성
