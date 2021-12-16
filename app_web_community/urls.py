@@ -7,6 +7,7 @@ import app_web_community.views.postviews as postviews
 urlpatterns = [
     path('', indexviews.index, name='index'),
     path('paging', indexviews.indexPaging, name='indexPaging'),
+    path('search', indexviews.indexSearch, name='indexSearch'),
 
     path('login', accountviews.login.as_view(), name='login'),
     path('logout', accountviews.logout, name='logout'),
@@ -15,6 +16,7 @@ urlpatterns = [
 
     path('post/list', postviews.postList, name='postList'),
     path('post/paging', postviews.postPaging, name='postPaging'),
+    path('post/search', postviews.postSearch, name='postSearch'),
     path('post/detail', postviews.postDetail, name='postDetail'),
     path('post/write', postviews.postWrite.as_view(), name='postWrite'),
     path('post/update', postviews.postUpdate.as_view(), name='postUpdate'),

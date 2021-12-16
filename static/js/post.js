@@ -34,6 +34,55 @@ function goPage(page) {
 
 
 /***********************************************************************************************
+ * 게시글 검색
+ ***********************************************************************************************/
+function goSearch(page) {
+    var division = $("#inputDivision").val();
+    var keyword = $("#inputKeyword").val();
+
+    var alert_btn = document.getElementById('btnSearch');
+
+    if(division == null) {
+        $("#alert_warning_msg").text("카테고리를 선택해주세요.");
+        alert_btn.setAttribute('data-target', '#alertWarningModal');
+        return;
+    }
+    else if(keyword == '') {
+        $("#alert_warning_msg").text("키워드를 입력해주세요.");
+        alert_btn.setAttribute('data-target', '#alertWarningModal');
+        return;
+    }
+
+    alert_btn.removeAttribute('data-target');
+
+    $.ajax({
+        type: 'GET',
+        url: 'search',
+        data: {
+            'page': page,
+            'division': division,
+            'keyword': keyword,
+        },
+        success: function(response) {
+            $('#divPagination').html(response);
+
+            // 페이지 번호 선택 시, 게시물 상단 위치로 페이지 이동
+            $(".pageNum").click(function() {
+                var offset = $('#wrapMainBody').offset();
+
+               $('html, body').animate({scrollTop : offset.top - 20}, 700);
+
+               return false;
+            });
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+
+/***********************************************************************************************
  * 게시글 입력 내용 크기에 맞게 textarea 크기 자동 조절
  ***********************************************************************************************/
  function postContentResize(e) {
