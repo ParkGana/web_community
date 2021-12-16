@@ -3,10 +3,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import timezone
-from django.db.models import Q, Subquery
+from django.db.models import Q, Subquery, Count
 import datetime
 
-from app_web_community.models import ComCategory, Post, PerCategory, Like
+from app_web_community.models import ComCategory, Post, PerCategory, Like, Comment
 
 # 게시글 목록 
 @csrf_exempt
@@ -334,6 +334,92 @@ def postDelete(request):
         print('post delete error')
 
     return redirect('/post/list')
+
+
+# 게시글 댓글 상세정보
+@csrf_exempt
+def postComment(request):
+    post_id = request.POST.get('post_id')
+
+    post = Post.objects.filter(POST_ID=post_id).values('POST_ID', 'POST_TITLE', 'POST_CONTENT', 'POST_WRITE_DATE', 'POST_UPDATE_DATE', 'USER_ID', 'COM_CATEGORY_ID', 'PER_CATEGORY_ID')[0]
+
+    comment = Comment.objects.filter(POST_ID=post_id, PARENT_COMMENT_ID__isnull=True).values('COMMENT_ID', 'USER_ID', 'COMMENT_CONTENT', 'COMMENT_WRITE_DATE').order_by('-COMMENT_WRITE_DATE')
+    comment_re = Comment.objects.filter(POST_ID=post_id, PARENT_COMMENT_ID__isnull=False).values('COMMENT_ID', 'USER_ID', 'COMMENT_CONTENT', 'COMMENT_WRITE_DATE', 'PARENT_COMMENT_ID').order_by('-COMMENT_WRITE_DATE')
+    comment_re_cnt = Comment.objects.filter(POST_ID=post_id, PARENT_COMMENT_ID__isnull=False).values('PARENT_COMMENT_ID').annotate(Count('PARENT_COMMENT_ID'))
+
+    context = {
+        'post': post,
+        'comment': comment,
+        'comment_re': comment_re,
+        'comment_re_cnt': comment_re_cnt
+    }
+
+    return render(request, 'ajax/postComment.html', context=context)
+
+
+# 게시글 댓글 작성
+@csrf_exempt
+def postCommentWrite(request):
+    post_id = request.POST.get('post_id')
+    state = request.POST.get('state')
+    user_id = request.session.get('userID')
+
+     # 게시글에 대한 댓글
+    if state == 'C':
+        try:
+            comment_content = request.POST.get('comment_content')
+
+            last_id = Comment.objects.values('COMMENT_ID').order_by('-COMMENT_ID')[0]
+            comment_id = last_id['COMMENT_ID'] + 1
+            comment_date = datetime.datetime.strftime(timezone.localtime(), '%Y-%m-%d %H:%M:%S')
+
+            Comment.objects.create(COMMENT_ID=comment_id, COMMENT_CONTENT=comment_content, COMMENT_WRITE_DATE=comment_date, COMMENT_UPDATE_DATE=comment_date, USER_ID=user_id, POST_ID=post_id)
+        except Exception:
+            print('comment create error')
+    # 댓글에 대한 답글
+    elif state == 'R':
+        try:
+            comment_content = request.POST.get('comment_content')
+            parent_comment_id = request.POST.get('parent_comment_id')
+
+            last_id = Comment.objects.values('COMMENT_ID').order_by('-COMMENT_ID')[0]
+            comment_id = last_id['COMMENT_ID'] + 1
+            comment_date = datetime.datetime.strftime(timezone.localtime(), '%Y-%m-%d %H:%M:%S')
+
+            Comment.objects.create(COMMENT_ID=comment_id, COMMENT_CONTENT=comment_content, COMMENT_WRITE_DATE=comment_date, COMMENT_UPDATE_DATE=comment_date, PARENT_COMMENT_ID=parent_comment_id, USER_ID=user_id, POST_ID=post_id)
+        except Exception:
+            print('recomment create error')
+
+    return render(request, 'ajax/postComment.html')
+
+
+# 게시글 댓글 삭제
+@csrf_exempt
+def postCommentDelete(request):
+    comment_id = request.POST.get('comment_id')
+    parent_comment_id = request.POST.get('parent_comment_id')
+    state = request.POST.get('state')
+
+    if state == 'C':
+        comment_re = Comment.objects.filter(COMMENT_ID__in=Subquery(Comment.objects.filter(PARENT_COMMENT_ID=comment_id).values('COMMENT_ID'))).values('COMMENT_ID')
+
+        if comment_re :
+            update_data = Comment.objects.get(COMMENT_ID=comment_id)
+
+            update_data.COMMENT_CONTENT = '(삭제된 댓글입니다.)'
+
+            update_data.save()
+        else:
+            Comment.objects.get(COMMENT_ID=comment_id).delete()
+    elif state == 'R':
+        parent_comment = Comment.objects.filter(COMMENT_ID=Subquery(Comment.objects.filter(COMMENT_ID=parent_comment_id).values('COMMENT_ID')), COMMENT_CONTENT='(삭제된 댓글입니다.)')
+
+        Comment.objects.get(COMMENT_ID=comment_id).delete()
+
+        if parent_comment:
+            Comment.objects.filter(COMMENT_ID=parent_comment_id).delete()
+
+    return render(request, 'ajax/postComment.html')
 
 
 # 사용자 카테고리

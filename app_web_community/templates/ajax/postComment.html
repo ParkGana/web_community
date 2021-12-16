@@ -1,0 +1,53 @@
+<p id="pComment">댓글</p>
+{% if post.USER_ID != request.session.userID %}
+    <div id="divInputComment">
+        <textarea id="inputComment" placeholder="댓글을 입력해주세요"></textarea>
+        <button id="btnCommentWrite" data-toggle="modal" onclick="writeComment('C', 0)">작성</button>
+    </div>
+{% endif %}
+<div id="wrapComment">
+    {% if comment %}
+        {% for comment in comment %}
+            <div class="divComment">
+                <p class="pCommentUser">{{ comment.USER_ID }}
+                    <p class="pCommentDate">{{ comment.COMMENT_WRITE_DATE|date:'Y.m.d H:i:s' }}</p>
+                    <p class="pCommentReWrite" onclick="toggleCommentReWrite('{{ comment.COMMENT_ID }}')">답글 작성</p>
+                    {% if comment.USER_ID == request.session.userID %}
+                        <p class="pCommentDelete" onclick="deleteComment('C', {{ comment.COMMENT_ID }}, 0)">삭제</p>
+                    {% endif %}
+                </p>
+                <p class="pCommentContent">{{ comment.COMMENT_CONTENT }}</p>
+                <div class="divInputCommentRe" id="divInputCommentRe{{ comment.COMMENT_ID }}">
+                    <textarea class="inputCommentRe" id="inputCommentRe{{ comment.COMMENT_ID }}" placeholder="대댓글을 입력해주세요"></textarea>
+                    <button class="btnCommentReWrite" id="btnCommentReWrite{{ comment.COMMENT_ID }}" data-toggle="modal" onclick="writeComment('R', {{ comment.COMMENT_ID }})">작성</button>
+                </div>
+                {% if comment_re %}
+                    {% for comment_re_cnt in comment_re_cnt %}
+                        {% if comment_re_cnt.PARENT_COMMENT_ID == comment.COMMENT_ID %}
+                            <p class="pCommentRe" onclick="toggleCommentRe('{{ comment.COMMENT_ID }}')">[ 답글 {{ comment_re_cnt.PARENT_COMMENT_ID__count }}개 보기 <i id="i{{ comment.COMMENT_ID }}" class="fas fa-angle-down"></i> ]</p>
+                            <div class="wrapCommentRe" id="wrapCommentRe{{ comment.COMMENT_ID }}">
+                                {% for comment_re in comment_re %}
+                                    {% if comment.COMMENT_ID == comment_re.PARENT_COMMENT_ID %}
+                                        <div class="divCommentRe">
+                                            <p class="pCommentUser">{{ comment_re.USER_ID }}
+                                                <p class="pCommentDate">{{ comment_re.COMMENT_WRITE_DATE|date:'Y.m.d H:i:s' }}</p>
+                                                {% if comment_re.USER_ID == request.session.userID %}
+                                                    <p class="pCommentDelete" onclick="deleteComment('R', {{ comment_re.COMMENT_ID }}, {{ comment.COMMENT_ID }})">삭제</p>
+                                                {% endif %}
+                                            </p>
+                                            <p class="pCommentContent">{{ comment_re.COMMENT_CONTENT }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="divComment">
+            <p class="noComment">댓글이 없습니다.</p>
+        </div>
+    {% endif %}
+</div>
