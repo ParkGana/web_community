@@ -39,6 +39,14 @@
             <textarea id="inputContent" readonly>{{ post.POST_CONTENT }}</textarea>
         </div>
 
+        <div id="wrapLike"></div>
+
+        <div id="wrapCommentList"></div>
+
+        <input type="hidden" id="post_id" value="{{ post.POST_ID }}">
+        <input type="hidden" id="post_user_id" value="{{ post.USER_ID }}">
+        <input type="hidden" id="user_id" value="{{ request.session.userID }}">
+
         <form method="POST" action="{% url 'postDelete' %}" id="formPostDelete">
             <input type="hidden" name="postID" value="{{ post.POST_ID }}">
         </form>

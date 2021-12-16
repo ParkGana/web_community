@@ -1,6 +1,7 @@
 $(document).ready(function() {
     getUserCategory();
     goPage(1);
+    getLike();
 });
 
 
@@ -74,6 +75,69 @@ function goSearch(page) {
 
                return false;
             });
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+
+/***********************************************************************************************
+ * 게시글 좋아요 정보
+ ***********************************************************************************************/
+function getLike() {
+    var post_id = $("#post_id").val();
+
+    $.ajax({
+        type: 'POST',
+        url: 'like',
+        data: {
+            'post_id': post_id,
+        },
+        success: function(response) {
+            $('#wrapLike').html(response);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+
+/***********************************************************************************************
+ * 게시글 좋아요
+ ***********************************************************************************************/
+function likePost(state) {
+    var post_id = $("#post_id").val();
+    var post_user_id = $("#post_user_id").val();
+    var user_id = $("#user_id").val();
+    var alert_btn;
+
+    if(state == 'Y') {
+        alert_btn = document.getElementById('divThumbsUp');
+    }
+    else {
+        alert_btn = document.getElementById('divThumbsDown');
+    }
+
+    if(post_user_id == user_id) {
+        $("#alert_warning_msg").text("본인의 게시글에서는 불가능합니다.");
+        alert_btn.setAttribute('data-target', '#alertWarningModal');
+        return;
+    }
+
+    alert_btn.removeAttribute('data-target');
+
+    $.ajax({
+        type: 'POST',
+        url: 'like/choice',
+        data: {
+            'post_id': post_id,
+            'state': state
+        },
+        success: function() {
+            getLike();
         },
         error: function(err) {
             console.log(err);

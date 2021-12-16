@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.db.models import Q, Subquery
 import datetime
 
-from app_web_community.models import ComCategory, Post, PerCategory
+from app_web_community.models import ComCategory, Post, PerCategory, Like
 
 # 게시글 목록 
 @csrf_exempt
@@ -156,6 +156,73 @@ def postDetail(request):
     }
 
     return render(request, 'postDetail.html', context=context)
+
+
+# 게시글 좋아요 상세정보
+@csrf_exempt
+def postLike(request):
+    post_id = request.POST.get('post_id')
+    user_id = request.session.get('userID')
+
+    like_cnt = Like.objects.filter(POST_ID=post_id, LIKE_STATE='Y').count()
+    hate_cnt = Like.objects.filter(POST_ID=post_id, LIKE_STATE='N').count()
+
+    like_user = Like.objects.filter(POST_ID=post_id, USER_ID=user_id).values('LIKE_STATE')
+
+    if like_user:
+        like_user = like_user[0]
+
+    context = {
+        'like_cnt':like_cnt,
+        'hate_cnt': hate_cnt,
+        'like_user': like_user,
+    }
+
+    return render(request, 'ajax/postLike.html', context=context)
+
+
+# 게시글 좋아요
+@csrf_exempt
+def postLikeChoice(request):
+    post_id = request.POST.get('post_id')
+    state = request.POST.get('state')
+    user_id = request.session.get('userID')
+
+    like_user = Like.objects.filter(USER_ID=user_id, POST_ID=post_id).values('LIKE_ID', 'LIKE_STATE')
+
+    # 데이터 존재하는 경우
+    if like_user:
+        # 이미 선택한 상태를 다시 선택할 경우, 해당 선택사항 삭제
+        if state == like_user[0]['LIKE_STATE']:
+            try:
+                like_id = like_user[0]['LIKE_ID']
+
+                Like.objects.get(LIKE_ID=like_id).delete()
+            except Exception:
+                print('like delete error')
+        # 이전에 선택한 상태와 다른 상태를 선택할 경우, 해당 선택사항 수정
+        else:
+            try:
+                like_id = like_user[0]['LIKE_ID']
+
+                update_data = Like.objects.get(LIKE_ID=like_id)
+
+                update_data.LIKE_STATE = state
+
+                update_data.save()
+            except Exception:
+                print('like update error')
+    # 데이터 존재하지 않는 경우, 해당 선택사항 생성
+    else:
+        try:
+            last_id = Like.objects.values('LIKE_ID').order_by('-LIKE_ID')[0]
+            like_id = last_id['LIKE_ID'] + 1
+
+            Like.objects.create(LIKE_ID=like_id, USER_ID=user_id, POST_ID=post_id, LIKE_STATE=state)
+        except Exception:
+            print('like create error')
+
+    return render(request, 'ajax/postLike.html')
 
 
 # 게시글 작성
